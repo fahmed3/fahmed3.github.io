@@ -19,7 +19,8 @@ function connectSpec() {
 
 function success(spec){
     let multiSynth = new MichaelMultiSynth();
-    console.log("Connected New Specdrum: ", spec.device.name);
+    let name = spec.device.name
+    console.log("Connected New Specdrum: ", name);
     specdrums[spec.device.id] = spec;
     //console.log(specdrums);
     console.log(spec);
@@ -28,6 +29,24 @@ function success(spec){
     spec.addEventListener("tap", (e) => console.log("tapped") );
     spec.addEventListener("release", (e) => multiSynth.release(e.isChord) );
     createGUI(spec, multiSynth);
+    let volumeUp = document.getElementsByClassName("volume-up");
+    for (let i = volumeUp.length-1; i > volumeUp.length-4; i--){
+        let falseName = volumeUp[i].classList.item(1);
+        volumeUp[i].classList.remove(falseName);
+        volumeUp[i].classList.add(name);
+    }
+    spec.addEventListener("tap", () => {
+        for (let i = 0; i < document.getElementsByClassName(name).length; i++){
+            document.getElementsByClassName(name)[i].style.display ="block";
+            console.log(name, "volume up");
+        }
+    })
+    spec.addEventListener("release", () => {
+        for (let i = 0; i < document.getElementsByClassName(name).length; i++){
+            document.getElementsByClassName(name)[i].style.display ="none";
+            console.log(name, "volume down");
+        }
+    })
 }
 
 function failure() {
@@ -42,7 +61,6 @@ function createGUI(spec, multisynth){
     if (synth.style.display == "none"){
         let s = document.getElementsByClassName("settings")[0];
         s.innerHTML = spec.device.name + ": Settings";
-        console.log(s.innerHTML);
         let keyDD = document.getElementsByClassName('ddKey')[0];
         let keySelect = document.getElementsByClassName('dropdown-item-key');
         let synthDD = document.getElementsByClassName('ddSynth')[0];
