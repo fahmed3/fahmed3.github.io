@@ -55,7 +55,7 @@ function failure() {
 
 function createGUI(spec, multisynth){
     /* When Specdrum connects, show GUI */
-    let wrap = document.getElementById("wrap");
+    let wrap = document.getElementById("synth-wrap");
     let synth = document.getElementById("synth");
     // If connecting first Specdrum, show synth node
     if (synth.style.display == "none"){
@@ -82,7 +82,7 @@ function createGUI(spec, multisynth){
         synth.style.display = "block";
         console.log("block");
     }
-    // If connecting further Specdrums, clone synth node and append to wrap node
+    // If connecting further Specdrums, clone synth node and insert before video node
     else {
         let newGUI = synth.cloneNode(true);
         console.log(spec.device.name);
@@ -106,7 +106,9 @@ function createGUI(spec, multisynth){
                 synthDD.textContent = "Synth: " + synthSelect[i].text;
             })
         }
-        wrap.appendChild(newGUI);
+        // wrap.insertBefore(newGUI, )
+        // wrap.append(newGUI);
+        wrap.insertBefore(newGUI, document.getElementById("new"));
     }
     
 }
